@@ -4,23 +4,26 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tienda de Arte | Gamuza Isidora</title>
+  <meta name="description" content="Portafolio y tienda de arte de Gamuza Isidora. Obras originales y prints. Envíos a Chile y LATAM." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root{
       --bg:#fdfaf5; --card:#fffaf0; --muted:#e1d9c6; --text:#3a2c2c; --sub:#6b5555; --accent:#c49a6c; --accent-2:#a67b5b; --danger:#c94f4f;
     }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;font-family:Inter,serif;background:var(--bg);color:var(--text)}
+    html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--text)}
     h1,h2,h3{font-family:'Playfair Display',serif}
     a{color:inherit;text-decoration:none}
     .container{max-width:1100px;margin:0 auto;padding:24px}
-    header{position:sticky;top:0;background:rgba(253,250,245,0.9);backdrop-filter:blur(6px);border-bottom:1px solid var(--muted);z-index:50}
+    header{position:sticky;top:0;background:rgba(253,250,245,0.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--muted);z-index:50}
     .nav{display:flex;align-items:center;justify-content:space-between;gap:16px}
     .brand{font-family:'Playfair Display',serif;display:flex;align-items:center;gap:12px;font-weight:600;font-size:20px;color:var(--accent-2)}
     .brand .logo{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;color:#fff;font-weight:700}
     .nav-actions{display:flex;align-items:center;gap:10px}
     button,.btn{border:0;border-radius:12px;padding:10px 14px;font-weight:600;cursor:pointer;transition:all .2s ease;background:var(--accent);color:#fff}
-    button:hover,.btn:hover{filter:brightness(1.1)}
+    button:hover,.btn:hover{filter:brightness(1.08)}
     .btn-ghost{background:transparent;border:1px solid var(--muted);color:var(--text)}
     .btn-primary{background:var(--accent-2);color:#fff}
     .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:stretch;margin:28px 0}
@@ -28,14 +31,25 @@
     .card.pad{padding:22px}
     .pill{display:inline-block;background:var(--accent);color:#fff;padding:6px 12px;border-radius:999px;font-size:12px;margin-bottom:10px}
     .sub{color:var(--sub)}
+    .hero-media{min-height:300px;background:#f9f6f0;display:grid;place-items:center;position:relative;border:1px solid var(--muted);border-radius:20px;overflow:hidden}
+    .hero-media img{width:100%;height:100%;object-fit:cover}
+    .toolbar{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+    input[type="search"], select, input, textarea{background:#fff;border:1px solid var(--muted);border-radius:12px;padding:10px 12px;color:var(--text);width:100%}
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+    .product{display:flex;flex-direction:column;gap:10px}
     .product .img{aspect-ratio:1/1;border-radius:16px;overflow:hidden;border:1px solid var(--muted);box-shadow:0 1px 4px rgba(0,0,0,.06)}
     .product .img img{width:100%;height:100%;object-fit:cover}
+    .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .price{font-weight:800}
+    .tag{font-size:12px;background:#fff;border:1px dashed var(--muted);padding:4px 8px;border-radius:999px;color:var(--sub)}
+    .section{margin:34px 0}
+    .section h2{margin:0 0 10px 0}
     .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
     .gallery img{width:100%;height:140px;object-fit:cover;border-radius:12px;border:1px solid var(--muted)}
     footer{margin-top:40px;border-top:1px solid var(--muted);background:var(--card)}
     .foot{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;padding:18px 0;color:var(--sub)}
-    /* Lightbox */
+
+    /* Lightbox (preview con zoom) */
     .lightbox{position:fixed;inset:0;display:none;z-index:1000}
     .lightbox.show{display:block}
     .lightbox .backdrop{position:absolute;inset:0;background:rgba(0,0,0,.6)}
@@ -48,11 +62,465 @@
     .lb-meta{color:var(--sub);font-size:14px}
     .lb-actions{display:flex;gap:10px;margin-top:auto}
     .lb-zoom{position:absolute;right:10px;bottom:10px;display:flex;gap:8px}
-    .lb-zoom button{background:rgba(255,255,255,.8);color:var(--text);border:1px solid var(--muted)}
+    .lb-zoom button{background:rgba(255,255,255,.9);color:var(--text);border:1px solid var(--muted)}
     @media(max-width:900px){.lb-card{grid-template-columns:1fr}.lb-media{border-right:0;border-bottom:1px solid var(--muted);border-radius:18px 18px 0 0}}
   </style>
 </head>
 <body>
-  <!-- El resto del contenido de la página permanece igual que antes -->
+  <header>
+    <div class="container nav">
+      <div class="brand"><div class="logo">G</div> <span id="brandName">Gamuza Isidora</span></div>
+      <div class="nav-actions">
+        <a class="btn btn-ghost" href="#obras">Obras</a>
+        <a class="btn btn-ghost" href="#acerca">Acerca</a>
+        <a class="btn btn-ghost" href="#contacto">Contacto</a>
+        <button id="cartBtn" class="btn" aria-label="Abrir carrito">🛒<span id="cartBadge" class="badge" hidden>0</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="card pad">
+        <span class="pill">Nueva colección • 2025</span>
+        <h1 id="heroTitle">Serie "Horizontes" – originales y prints firmados</h1>
+        <p class="sub">Obras únicas y ediciones limitadas. Envíos a Chile y LATAM. Pagos con transferencia, tarjeta (Stripe) o contra entrega en exposiciones.</p>
+        <div class="toolbar">
+          <input type="search" id="search" placeholder="Buscar por título, técnica, año…" />
+          <select id="filterTag">
+            <option value="">Todas las categorías</option>
+            <option value="original">Original</option>
+            <option value="print">Print</option>
+            <option value="óleo">Óleo</option>
+            <option value="acrílico">Acrílico</option>
+            <option value="acuarela">Acuarela</option>
+            <option value="fotografía">Fotografía</option>
+          </select>
+        </div>
+      </div>
+      <div class="card hero-media" aria-hidden="true">
+        <img id="heroImage" src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1600&auto=format&fit=crop" alt="Obra destacada"/>
+      </div>
+    </section>
+
+    <section id="obras" class="section">
+      <h2>Obras disponibles</h2>
+      <div id="productGrid" class="grid"></div>
+    </section>
+
+    <section class="section">
+      <h2>Galería</h2>
+      <div class="gallery" id="gallery">
+        <img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800&auto=format&fit=crop" alt="Obra en estudio"/>
+        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800&auto=format&fit=crop" alt="Proceso creativo"/>
+        <img src="https://images.unsplash.com/photo-1513353474759-f80402e10f43?q=80&w=800&auto=format&fit=crop" alt="Detalle de lienzo"/>
+        <img src="https://images.unsplash.com/photo-1545239351-1141bd82e8a6?q=80&w=800&auto=format&fit=crop" alt="Exposición"/>
+        <img src="https://images.unsplash.com/photo-1495465798138-718f86d1a4d0?q=80&w=800&auto=format&fit=crop" alt="Taller"/>
+        <img src="https://images.unsplash.com/photo-1487357298028-b07e960d05bc?q=80&w=800&auto=format&fit=crop" alt="Texturas"/>
+        <img src="https://images.unsplash.com/photo-1472653816316-3ad6f10a6592?q=80&w=800&auto=format&fit=crop" alt="Pigmentos"/>
+        <img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?q=80&w=800&auto=format&fit=crop" alt="Atmósferas"/>
+      </div>
+    </section>
+
+    <section id="acerca" class="section card pad">
+      <h2>Acerca de la artista</h2>
+      <p>Soy <strong id="artistName">Isidora Gamuza</strong>, artista visual enfocada en paisajes abstractos y figuración contemporánea. Mi trabajo explora la relación entre memoria, territorio y color.</p>
+      <p class="sub" id="artistSocials">Sígueme en Instagram y TikTok para ver procesos, bocetos y fechas de exposición.</p>
+    </section>
+
+    <section id="contacto" class="section card pad">
+      <h2>Contacto</h2>
+      <p class="sub">¿Buscas una pieza a medida, licencias o colaboraciones? Escríbeme:</p>
+      <form id="contactForm">
+        <div class="grid" style="grid-template-columns:1fr 1fr 1fr">
+          <input required placeholder="Tu nombre" name="name" />
+          <input required type="email" placeholder="Email" name="email" />
+          <input placeholder="Instagram/Tel (opcional)" name="handle" />
+        </div>
+        <textarea name="message" placeholder="Cuéntame qué buscas" style="width:100%;margin-top:10px;min-height:100px"></textarea>
+        <div style="display:flex;gap:10px;margin-top:10px;align-items:center">
+          <button class="btn-primary" type="submit">Enviar</button>
+          <span class="sub">Responderé en 24–48h</span>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="container">
+    <div class="foot">
+      <div>© <span id="year"></span> <span id="footBrand">Gamuza Isidora</span>. Todos los derechos reservados.</div>
+      <div style="display:flex;gap:10px">
+        <a class="tag" id="igLink" href="#" target="_blank" rel="noopener">Instagram</a>
+        <a class="tag" id="ttLink" href="#" target="_blank" rel="noopener">TikTok</a>
+        <a class="tag" id="mailLink" href="mailto:gamuza.isidora@example.com">Email</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Drawer Carrito -->
+  <div id="drawer" class="lightbox" aria-hidden="true" style="display:none"></div>
+  <div id="drawerReal" class="drawer" aria-hidden="true">
+    <div class="backdrop" role="button" aria-label="Cerrar" tabindex="0"></div>
+    <div class="panel" style="position:absolute;right:0;top:0;bottom:0;width:min(480px,100%);background:var(--card);border-left:1px solid var(--muted);display:flex;flex-direction:column">
+      <header class="container nav" style="padding:12px 16px">
+        <strong>Tu carrito</strong>
+        <button id="closeDrawer" class="btn btn-ghost">✕</button>
+      </header>
+      <div id="cartItems" class="items" style="padding:18px;display:flex;flex-direction:column;gap:12px;overflow:auto"></div>
+      <div class="footer" style="border-top:1px solid var(--muted);padding:16px;display:grid;gap:12px">
+        <div class="row"><span class="sub">Subtotal</span><strong id="subtotal">—</strong></div>
+        <div class="sub">Envío calculado según destino y tamaño. Te escribiré para coordinar detalles.</div>
+        <button id="checkoutBtn" class="btn-primary">Finalizar pedido</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox Preview -->
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <div class="backdrop" role="button" aria-label="Cerrar"></div>
+    <div class="stage">
+      <div class="lb-card">
+        <div class="lb-media">
+          <img id="lbImg" src="" alt="Previsualización"/>
+          <div class="lb-zoom">
+            <button id="zoomOut" class="btn btn-ghost">−</button>
+            <button id="zoomReset" class="btn btn-ghost">100%</button>
+            <button id="zoomIn" class="btn btn-ghost">＋</button>
+          </div>
+        </div>
+        <div class="lb-info">
+          <div class="lb-title" id="lbTitle"></div>
+          <div class="lb-meta" id="lbMeta"></div>
+          <div class="lb-actions">
+            <button id="lbAdd" class="btn-primary">Añadir al carrito</button>
+            <button id="lbClose" class="btn btn-ghost">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================
+    // CONFIGURACIÓN
+    // =========================
+    const CONFIG = {
+      ARTIST_NAME: "Isidora Gamuza",
+      BRAND: "Gamuza Isidora",
+      CURRENCY: "CLP",
+      COUNTRY: "Chile",
+      SOCIALS: {
+        instagram: "https://www.instagram.com/gamuzaisidora/",
+        tiktok: "https://tiktok.com/@gamuzaisidora",
+        email: "gamuza.isidora@example.com"
+      },
+      CHECKOUT_MODE: "auto",
+      WHATSAPP: "+56900000000" // ← reemplazar por número real
+    };
+
+    // =========================
+    // PRODUCTOS (ejemplo)
+    // =========================
+    const PRODUCTS = [
+      {
+        id: "obra-1",
+        title: "Horizonte frío",
+        price: 250000,
+        medium: "Óleo sobre tela",
+        size: "50×70 cm",
+        year: 2025,
+        tags: ["original", "óleo"],
+        stock: 1,
+        image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop",
+        stripeLink: ""
+      },
+      {
+        id: "obra-2",
+        title: "Cascada lunar (print)",
+        price: 35000,
+        medium: "Print giclée en papel algodón",
+        size: "30×40 cm",
+        year: 2025,
+        tags: ["print", "acuarela"],
+        stock: 20,
+        image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1600&auto=format&fit=crop",
+        stripeLink: ""
+      },
+      {
+        id: "obra-3",
+        title: "Bahía dorada",
+        price: 190000,
+        medium: "Acrílico sobre madera",
+        size: "40×40 cm",
+        year: 2024,
+        tags: ["original", "acrílico"],
+        stock: 1,
+        image: "https://images.unsplash.com/photo-1526318472351-c75fcf070305?q=80&w=1600&auto=format&fit=crop",
+        stripeLink: ""
+      },
+      {
+        id: "obra-4",
+        title: "Bruma de verano (print)",
+        price: 42000,
+        medium: "Print giclée en papel algodón",
+        size: "40×50 cm",
+        year: 2024,
+        tags: ["print", "fotografía"],
+        stock: 30,
+        image: "https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?q=80&w=1600&auto=format&fit=crop",
+        stripeLink: ""
+      },
+      {
+        id: "obra-5",
+        title: "Mareas (díptico)",
+        price: 330000,
+        medium: "Óleo sobre tela",
+        size: "2 piezas de 40×60 cm",
+        year: 2025,
+        tags: ["original", "óleo"],
+        stock: 1,
+        image: "https://images.unsplash.com/photo-1511367461989-f85a21fda167?q=80&w=1600&auto=format&fit=crop",
+        stripeLink: ""
+      }
+    ];
+
+    // =========================
+    // UTILIDADES
+    // =========================
+    const $ = (sel, root=document) => root.querySelector(sel);
+    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+    const fmt = new Intl.NumberFormat('es-CL', { style: 'currency', currency: CONFIG.CURRENCY, maximumFractionDigits: CONFIG.CURRENCY === 'CLP' ? 0 : 2 });
+    function save(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
+    function load(key, fallback){ try { return JSON.parse(localStorage.getItem(key)) ?? fallback } catch { return fallback } }
+
+    // =========================
+    // RENDER PRODUCTOS
+    // =========================
+    const grid = $('#productGrid');
+    const search = $('#search');
+    const filterTag = $('#filterTag');
+
+    function productCard(p){
+      return `
+      <article class="product card pad" data-id="${p.id}" data-tags="${p.tags.join(',')}">
+        <div class="img"><img src="${p.image}" alt="${p.title}"></div>
+        <div class="row"><strong>${p.title}</strong><span class="price">${fmt.format(p.price)}</span></div>
+        <div class="sub">${p.medium} • ${p.size} • ${p.year}</div>
+        <div class="row">
+          <div style="display:flex;gap:6px;flex-wrap:wrap">${p.tags.map(t=>`<span class=\"tag\">${t}</span>`).join('')}</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn add" ${p.stock===0?'disabled':''}>Añadir</button>
+            <button class="btn btn-ghost view">Ver</button>
+          </div>
+        </div>
+      </article>`
+    }
+
+    function renderProducts(){
+      const q = search.value.trim().toLowerCase();
+      const tag = filterTag.value;
+      const items = PRODUCTS.filter(p=>{
+        const hay = (p.title+" "+p.medium+" "+p.size+" "+p.year+" "+p.tags.join(' ')).toLowerCase();
+        const matchesQuery = q? hay.includes(q) : true;
+        const matchesTag = tag? p.tags.includes(tag) : true;
+        return matchesQuery && matchesTag;
+      });
+      grid.innerHTML = items.map(productCard).join('');
+      $$('.add', grid).forEach(btn=> btn.addEventListener('click', (e)=>{
+        const id = e.target.closest('.product').dataset.id;
+        addToCart(id);
+      }));
+      $$('.view', grid).forEach(btn=> btn.addEventListener('click', (e)=>{
+        const id = e.target.closest('.product').dataset.id;
+        previewProduct(id);
+      }));
+    }
+
+    search.addEventListener('input', renderProducts);
+    filterTag.addEventListener('change', renderProducts);
+
+    // =========================
+    // PREVIEW + ZOOM
+    // =========================
+    const lightbox = $('#lightbox');
+    const lbImg = $('#lbImg');
+    const lbTitle = $('#lbTitle');
+    const lbMeta = $('#lbMeta');
+    const lbAdd = $('#lbAdd');
+    const lbClose = $('#lbClose');
+
+    let Z = 1, TX = 0, TY = 0; // zoom y pan
+    let dragging = false, sx=0, sy=0, ox=0, oy=0;
+
+    function openLightbox(){ lightbox.classList.add('show'); }
+    function closeLightbox(){ lightbox.classList.remove('show'); resetZoom(); }
+
+    function resetZoom(){ Z=1; TX=0; TY=0; applyTransform(); }
+    function applyTransform(){ lbImg.style.transform = `translate(${TX}px, ${TY}px) scale(${Z})`; }
+
+    function previewProduct(id){
+      const p = PRODUCTS.find(x=>x.id===id); if(!p) return;
+      lbImg.src = p.image;
+      lbTitle.textContent = p.title;
+      lbMeta.textContent = `${p.medium} • ${p.size} • ${p.year} — ${fmt.format(p.price)}`;
+      lbAdd.onclick = ()=> addToCart(p.id);
+      openLightbox();
+    }
+
+    function initZoom(){
+      const media = lbImg.parentElement;
+      media.addEventListener('mousedown', (e)=>{ dragging=true; sx=e.clientX; sy=e.clientY; ox=TX; oy=TY; });
+      window.addEventListener('mousemove', (e)=>{ if(!dragging) return; TX = ox + (e.clientX - sx); TY = oy + (e.clientY - sy); applyTransform(); });
+      window.addEventListener('mouseup', ()=> dragging=false);
+      media.addEventListener('wheel', (e)=>{
+        e.preventDefault();
+        const delta = Math.sign(e.deltaY) * -0.1;
+        const prevZ = Z;
+        Z = Math.min(6, Math.max(1, Z + delta));
+        const rect = lbImg.getBoundingClientRect();
+        const cx = e.clientX - rect.left; const cy = e.clientY - rect.top;
+        const k = Z/prevZ - 1; TX -= cx * k; TY -= cy * k; applyTransform();
+      }, {passive:false});
+
+      $('#zoomIn').addEventListener('click', ()=>{ Z = Math.min(6, Z+0.25); applyTransform(); });
+      $('#zoomOut').addEventListener('click', ()=>{ Z = Math.max(1, Z-0.25); applyTransform(); });
+      $('#zoomReset').addEventListener('click', ()=>{ resetZoom(); });
+      $('.backdrop', lightbox).addEventListener('click', closeLightbox);
+      lbClose.addEventListener('click', closeLightbox);
+    }
+    initZoom();
+
+    // Click directo en imagen de tarjeta
+    grid.addEventListener('click', (e)=>{
+      const img = e.target.closest('.img img');
+      if(!img) return;
+      const card = e.target.closest('.product');
+      if(!card) return;
+      previewProduct(card.dataset.id);
+    });
+
+    // =========================
+    // CARRITO
+    // =========================
+    const CART_KEY = 'artist_shop_cart_v1';
+    let cart = load(CART_KEY, []); // [{id, qty}]
+
+    function syncBadge(){
+      const totalQty = cart.reduce((a,c)=>a+c.qty,0);
+      const badge = $('#cartBadge');
+      if(!badge) return;
+      badge.textContent = totalQty;
+      badge.hidden = totalQty===0;
+    }
+
+    function addToCart(id){
+      const prod = PRODUCTS.find(p=>p.id===id);
+      if(!prod) return;
+      const item = cart.find(x=>x.id===id);
+      const currentQty = item? item.qty : 0;
+      if(currentQty + 1 > prod.stock){
+        alert('No hay más stock disponible para esta obra.');
+        return;
+      }
+      if(item){ item.qty += 1 } else { cart.push({id, qty:1}) }
+      save(CART_KEY, cart); syncBadge(); renderCart();
+      $('#drawerReal').classList.add('show');
+      $('#drawerReal').style.display = 'block';
+    }
+
+    function removeFromCart(id){
+      cart = cart.filter(x=>x.id!==id);
+      save(CART_KEY, cart); syncBadge(); renderCart();
+    }
+
+    function setQty(id, qty){
+      const prod = PRODUCTS.find(p=>p.id===id);
+      const item = cart.find(x=>x.id===id);
+      if(!item||!prod) return;
+      const n = Math.max(1, Math.min(qty, prod.stock));
+      item.qty = n; save(CART_KEY, cart); syncBadge(); renderCart();
+    }
+
+    function renderCart(){
+      const wrap = $('#cartItems');
+      if(cart.length===0){ wrap.innerHTML = `<div class="sub" style="padding:24px;text-align:center">Tu carrito está vacío.</div>`; $('#subtotal').textContent = '—'; return; }
+      const items = cart.map(ci=>{ const p = PRODUCTS.find(x=>x.id===ci.id); return { ...p, qty: ci.qty }; });
+      wrap.innerHTML = items.map(it=>`
+        <div class="card" style="display:grid;grid-template-columns:72px 1fr auto;gap:12px;padding:10px;border-radius:14px">
+          <img src="${it.image}" alt="${it.title}" style="width:72px;height:72px;object-fit:cover;border-radius:10px;border:1px solid var(--muted)">
+          <div>
+            <div class="row"><strong>${it.title}</strong><span>${fmt.format(it.price*it.qty)}</span></div>
+            <div class="sub">${it.medium} • ${it.size} • ${it.year}</div>
+            <div class="row" style="gap:8px">
+              <button class="btn btn-ghost" onclick="setQty('${it.id}', ${it.qty-1})">−</button>
+              <span>${it.qty}</span>
+              <button class="btn btn-ghost" onclick="setQty('${it.id}', ${it.qty+1})">＋</button>
+            </div>
+          </div>
+          <button class="btn btn-ghost" onclick="removeFromCart('${it.id}')">🗑</button>
+        </div>
+      `).join('');
+      const subtotal = items.reduce((a,c)=>a+c.price*c.qty,0);
+      $('#subtotal').textContent = fmt.format(subtotal);
+    }
+
+    function checkout(){
+      if(cart.length===0){ alert('Tu carrito está vacío.'); return; }
+      const items = cart.map(ci=>{ const p=PRODUCTS.find(x=>x.id===ci.id); return {...p, qty:ci.qty}; });
+      if(CONFIG.CHECKOUT_MODE!=="manual" && items.length===1 && items[0].stripeLink){
+        window.open(items[0].stripeLink, '_blank');
+        return;
+      }
+      const lines = items.map(it=>`• ${it.title} x${it.qty} – ${fmt.format(it.price*it.qty)}`).join('%0A');
+      const total = items.reduce((a,c)=>a+c.price*c.qty,0);
+      const msg = `Hola, me interesa comprar:%0A${lines}%0A%0ASubtotal: ${fmt.format(total)}%0A%0ANombre:%0ADirección/ciudad:%0AMétodo de pago (transferencia/Stripe):`;
+      if(CONFIG.WHATSAPP){
+        const url = `https://wa.me/${CONFIG.WHATSAPP.replace(/[^\d]/g,'')}?text=${msg}`;
+        window.open(url,'_blank');
+      } else {
+        window.location.href = `mailto:${CONFIG.SOCIALS.email}?subject=Pedido de obras&body=${msg}`;
+      }
+    }
+
+    // =========================
+    // CONTACTO
+    // =========================
+    $('#contactForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const data = new FormData(e.target);
+      const name = data.get('name');
+      const email = data.get('email');
+      const handle = data.get('handle');
+      const message = (data.get('message')||'').trim();
+      const body = encodeURIComponent(`Nombre: ${name}\nEmail: ${email}\nContacto: ${handle}\n\n${message}`);
+      window.location.href = `mailto:${CONFIG.SOCIALS.email}?subject=Consulta desde web&body=${body}`;
+    });
+
+    // =========================
+    // UI BASICS
+    // =========================
+    function initBrand(){
+      $('#brandName').textContent = CONFIG.BRAND;
+      $('#footBrand').textContent = CONFIG.BRAND;
+      $('#artistName').textContent = CONFIG.ARTIST_NAME;
+      $('#artistSocials').innerHTML = `Sígueme en <a href="${CONFIG.SOCIALS.instagram}" target="_blank">Instagram</a> y <a href="${CONFIG.SOCIALS.tiktok}" target="_blank">TikTok</a> para ver procesos, bocetos y fechas de exposición.`;
+      $('#igLink').href = CONFIG.SOCIALS.instagram;
+      $('#ttLink').href = CONFIG.SOCIALS.tiktok;
+      $('#mailLink').href = `mailto:${CONFIG.SOCIALS.email}`;
+      $('#year').textContent = new Date().getFullYear();
+    }
+
+    // Drawer carrito
+    const drawer = $('#drawerReal');
+    $('#cartBtn').addEventListener('click', ()=>{ drawer.classList.add('show'); drawer.style.display='block'; renderCart(); });
+    $('#closeDrawer').addEventListener('click', ()=>{ drawer.classList.remove('show'); drawer.style.display='none'; });
+    $('.backdrop', drawer).addEventListener('click', ()=>{ drawer.classList.remove('show'); drawer.style.display='none'; });
+    $('#checkoutBtn').addEventListener('click', checkout);
+
+    // INIT
+    initBrand();
+    renderProducts();
+    syncBadge();
+  </script>
 </body>
 </html>
